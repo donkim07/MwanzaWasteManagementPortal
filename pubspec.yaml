@@ -1,0 +1,59 @@
+name: waste_manager
+description: "A new Flutter project."
+
+# Prevent accidental publishing to pub.dev.
+publish_to: 'none'
+
+version: 2.0.4+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  cloud_firestore: ^5.4.5
+  collection: ^1.18.0
+  data_table_2: ^2.5.15
+  file_picker: ^8.1.4
+  firebase_analytics: ^11.3.5
+  firebase_app_check: ^0.3.1+6
+  firebase_auth: ^5.3.2
+  firebase_core: ^3.7.0
+  firebase_messaging: ^15.1.5
+  firebase_storage: ^12.3.6
+  fl_chart: ^0.69.0
+  flutter:
+    sdk: flutter
+  flutter_animate: ^4.5.0
+  flutter_compass: ^0.8.1
+  flutter_image_compress: ^2.3.0
+  flutter_local_notifications: ^18.0.1
+  flutter_localizations:
+    sdk: flutter
+  flutter_map: ^7.0.2
+  flutter_map_marker_cluster: ^1.4.0
+  geolocator: ^13.0.1
+  google_maps_flutter: ^2.9.0
+  http: ^1.2.2
+  image_picker: ^1.1.2
+  intl: ^0.19.0
+  latlong2: ^0.9.1
+  path: ^1.9.0
+  path_provider: ^2.1.5
+  timeago: ^3.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Enable generation of localized Strings from arb files.
+  generate: true
+
+  assets:
+    # Add assets from the images directory to the application.
+    - assets/images/
+    - assets/images/red_flag.png

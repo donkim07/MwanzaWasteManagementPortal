@@ -1,0 +1,75 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id 'com.google.gms.google-services'
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace = "tz.co.wastemanagementportal"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = "25.1.8937393"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled = true
+    }
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile'].toString()) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    defaultConfig {
+        applicationId "tz.co.wastemanagementportal"
+        minSdkVersion 25
+        targetSdkVersion flutter.targetSdkVersion
+        versionCode 5
+        versionName flutter.versionName
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+//configurations.all {
+//    exclude group: 'com.google.android.gms', module: 'play-services-ads-identifier'
+//}
+
+dependencies {
+    implementation platform('com.google.firebase:firebase-bom:33.6.0')
+    implementation 'com.google.android.play:integrity:1.4.0'
+    // implementation 'com.google.firebase:firebase-analytics' {
+    //     exclude group: 'com.google.android.gms', module: 'play-services-ads-identifier'
+    // }
+    implementation('com.google.firebase:firebase-analytics-ktx') {
+        exclude group: 'com.google.android.gms', module: 'play-services-ads-identifier'
+    }
+//    implementation('com.google.firebase:firebase-core') {
+//        exclude group: 'com.google.android.gms', module: 'play-services-ads-identifier'
+//    }
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+}
