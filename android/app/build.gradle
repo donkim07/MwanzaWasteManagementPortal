@@ -65,7 +65,7 @@ dependencies {
     // implementation 'com.google.firebase:firebase-analytics' {
     //     exclude group: 'com.google.android.gms', module: 'play-services-ads-identifier'
     // }
-    implementation 'com.android.installreferrer:installreferrer:1.2.1'
+    implementation 'com.android.installreferrer:installreferrer:2.2'
     implementation('com.google.firebase:firebase-analytics-ktx') {
         exclude group: 'com.google.android.gms', module: 'play-services-ads-identifier'
     }
