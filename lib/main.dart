@@ -178,6 +178,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await NotificationService().handleNotification(message);
 }
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
@@ -192,15 +193,22 @@ void main() async {
   // Initialize Analytics
   final analytics = FirebaseAnalytics.instance;
   await analytics.setAnalyticsCollectionEnabled(true);
+  
+  // Log app open event
+  await analytics.logAppOpen();
 
   // Initialize notification service
   await NotificationService().initialize();
 
-  runApp(const MyApp());
+  runApp(MyApp(analytics: analytics));
 }
 
+
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final FirebaseAnalytics analytics;
+  
+  const MyApp({super.key, required this.analytics});
 
   @override
   Widget build(BuildContext context) {
@@ -208,12 +216,23 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       title: 'Waste Management App',
       debugShowCheckedModeBanner: false,
+      
+      // Add Firebase Analytics Observer
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: analytics),
+      ],
+      
       theme: ThemeData(
         primarySwatch: Colors.green,
         useMaterial3: true,
       ),
       home: const AuthenticationWrapper(),
       onGenerateRoute: (settings) {
+        // Track screen views for routes
+        if (settings.name != null) {
+          analytics.logScreenView(screenName: settings.name);
+        }
+        
         if (settings.name == '/waste_reports_map') {
           final args = settings.arguments as Map<String, dynamic>?;
           return MaterialPageRoute(
@@ -228,6 +247,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
 
 class AuthenticationWrapper extends StatefulWidget {
   const AuthenticationWrapper({super.key});
