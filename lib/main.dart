@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -186,6 +187,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+    // Initialize Firebase App Check with Play Integrity
+  await FirebaseAppCheck.instance.activate(
+    // Use Play Integrity provider instead of the deprecated SafetyNet
+    androidProvider: AndroidProvider.playIntegrity,
+    // For iOS, use DeviceCheck or AppAttest depending on iOS version
+    // appleProvider: AppleProvider.deviceCheck,
+  );
+
 
   // Set up background message handler
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -383,55 +393,6 @@ class _WasteManagementLoadingScreenState extends State<WasteManagementLoadingScr
 
 class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
  
-// Future<Widget> _getLandingPage(User user) async {
-//   // Log user login
-//   await FirebaseAnalytics.instance.logEvent(
-//     name: 'user_login',
-//     parameters: {
-//       'user_id': user.uid,
-//       'login_time': DateTime.now().toString(),
-//     },
-//   );
-
-//   final userDoc = await FirebaseFirestore.instance
-//       .collection('users')
-//       .doc(user.uid)
-//       .get();
-
-//   if (userDoc.exists) {
-//     final role = userDoc.data()?['role'];
-//     final district = userDoc.data()?['district'];
-
-//     // Update user's last login
-//     await FirebaseFirestore.instance
-//         .collection('users')
-//         .doc(user.uid)
-//         .update({
-//           'lastLogin': FieldValue.serverTimestamp(),
-//           'lastLoginDevice': Platform.operatingSystem,
-//         });
-
-//     if (role == 'admin') {
-//       // Subscribe to admin notifications
-//       await FirebaseMessaging.instance.subscribeToTopic('admin_notifications');
-//       return CitySelectionPageUsers(user: user);
-//     } else if (role == 'employee') {
-//       // Check district for employees and route accordingly
-//       if (district == 'Mwanza City') {
-//         return MapPage(user: user);
-//       } else if (district == 'Ilemela Municipal') {
-//         return ilemelaMapPage(user: user);
-//       } else {
-//         // If district is not properly set, fallback to CitySelectionPageUsers
-//         print('Warning: Employee district not properly set for user ${user.uid}');
-//         return CitySelectionPageUsers(user: user);
-//       }
-//     } else if (role == 'driver') {
-//       return DriverDashboardPage(user: user);
-//     }
-//   }
-//   return const CitySelectionPage();
-// }
 Future<Widget> _getLandingPage(User user) async {
   // Log user login
   await FirebaseAnalytics.instance.logEvent(
