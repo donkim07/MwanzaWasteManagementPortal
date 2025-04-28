@@ -39,7 +39,7 @@ android {
         applicationId "tz.co.wastemanagementportal"
         minSdkVersion 25
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 5
+        versionCode 6
         versionName flutter.versionName
         multiDexEnabled true
     }
@@ -47,6 +47,11 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
+
         }
     }
 }
